@@ -2,7 +2,7 @@ function BalanceHistoryViewModel() {
   //An address on a wallet
   var self = this;
   self.selectedAsset = ko.observable('');
-  self.availableAssets = !USE_TESTNET ? ko.observableArray(["XCP", "BTC"]) : ko.observableArray(["XCP"]);
+  self.availableAssets = !USE_TESTNET ? ko.observableArray(["XLP", "LTC"]) : ko.observableArray(["XLP"]);
   //^ don't load BTC as an asset on testnet, since we can't show the data (since blockchain doesn't support testnet)
   self.graphData = null;
   self.ASSET_LASTCHANGE = null;
@@ -28,7 +28,7 @@ function BalanceHistoryViewModel() {
     self.ASSET_LASTCHANGE = self.selectedAsset();
     $.jqlog.debug("Balance history: Token changed: " + self.selectedAsset());
 
-    if (self.selectedAsset() == "BTC") { //mainnet only (as we use blockchain.info for this and they don't support testnet)
+    if (self.selectedAsset() == "LTC") { //mainnet only (as we use blockchain.info for this and they don't support testnet)
       var addresses = WALLET.getAddressesList();
       self.graphData = [];
 
@@ -181,7 +181,7 @@ function TransactionHistoryItemViewModel(data) {
         self.DATA['forward_asset'], getAddressLabel(self.DATA['tx1_address']),
         smartFormat(normalizeQuantity(self.DATA['backward_quantity'], self.DATA['_backward_asset_divisible'])),
         self.DATA['backward_asset']);
-      if (self.DATA['forward_asset'] == 'BTC' || self.DATA['backward_asset'] == 'BTC') {
+      if (self.DATA['forward_asset'] == 'LTC' || self.DATA['backward_asset'] == 'LTC') {
         desc += " <b>(" + i18n.t("pending BTCpay") + ")</b>";
       }
     } else if (self.RAW_TX_TYPE == 'btcpays') {

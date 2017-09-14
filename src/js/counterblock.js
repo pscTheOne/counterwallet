@@ -19,12 +19,12 @@ Counterblock.getBalances = function(addresses, cwkeys, callback) {
         e = btcData[i];
         if (data[e.addr] || e.confirmedRawBal > 0) {
           data[e.addr] = data[e.addr] || {};
-          data[e.addr]['BTC'] = {
+          data[e.addr]['LTC'] = {
             'balance': e.confirmedRawBal,
             'txouts': e.rawUtxoData.length
           };
           if (cwkeys[e.addr]) {
-            data[e.addr]['BTC']['privkey'] = cwkeys[e.addr].getWIF();
+            data[e.addr]['LTC']['privkey'] = cwkeys[e.addr].getWIF();
           }
         }
       }

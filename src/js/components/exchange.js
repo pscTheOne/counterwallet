@@ -8,7 +8,7 @@ var BuySellAddressInDropdownItemModel = function(address, label, asset, balance)
 function createExchangeKnockoutValidators() {
   ko.validation.rules['ordersIsExistingAssetName'] = {
     validator: function(asset, self) {
-      if (asset == 'XCP') return true;
+      if (asset == 'XLP') return true;
       var match = ko.utils.arrayFirst(self.allAssets(), function(item) {
         return item == asset;
       });
@@ -79,7 +79,7 @@ function ExchangeViewModel() {
 
   self.selectedQuoteAsset = ko.observable();
   self.selectedQuoteAsset.subscribe(function(value) {
-    if (value == 'XCP') self.asset2(value);
+    if (value == 'XLP') self.asset2(value);
     else self.asset2('');
   })
 
@@ -918,7 +918,7 @@ function ExchangeViewModel() {
 
   self.selectMarket = function(item) {
     self.asset1(item.base_asset);
-    if (item.quote_asset == 'XCP') {
+    if (item.quote_asset == 'XLP') {
       self.selectedQuoteAsset(item.quote_asset);
     } else {
       self.selectedQuoteAsset('Other');
@@ -948,7 +948,7 @@ function ExchangeViewModel() {
 
     //Get a list of all assets
     failoverAPI("get_asset_names", {}, function(data, endpoint) {
-      data = ['XCP'].concat(data);
+      data = ['XLP'].concat(data);
       self.allAssets(data);
 
       //Set up typeahead bindings manually for now (can't get knockout and typeahead playing well together...)

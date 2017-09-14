@@ -5,8 +5,8 @@ var AssetLeaderboardViewModel = CClass.create(function() {
   self.marketCapHistory = null; //only used for leaderboard
   self.showPortfolioIn = ko.observable('');
   self.marketCapTables = ko.observableArray([
-    {'base': 'XCP', 'data': ko.observableArray([])},
-    {'base': 'BTC', 'data': ko.observableArray([])}
+    {'base': 'XLP', 'data': ko.observableArray([])},
+    {'base': 'LTC', 'data': ko.observableArray([])}
   ]);
   self._lastWindowWidth = null;
 
@@ -16,7 +16,7 @@ var AssetLeaderboardViewModel = CClass.create(function() {
     failoverAPI(self.isLeaderboard ? "get_market_info_leaderboard" : "get_market_info", self.isLeaderboard ? {} : {assets: assets}, function(data, endpoint) {
       self.marketInfo = data;
       self.updateMarketInfo();
-      self.showPortfolioIn("XCP"); //causes the table to be generated off of self.marketInfo
+      self.showPortfolioIn("XLP"); //causes the table to be generated off of self.marketInfo
     });
 
     if (self.isLeaderboard) {
@@ -41,7 +41,7 @@ var AssetLeaderboardViewModel = CClass.create(function() {
     for (i = 0; i < marketInfo.length; i++) {
       marketInfo[i]['position_xcp'] = i + 1;
     }
-    assert(self.marketCapTables()[0]['base'] == 'XCP');
+    assert(self.marketCapTables()[0]['base'] == 'XLP');
     for (i = 0; i < marketInfo.length; i++) {
       if (!marketInfo[i]['price_in_xcp']) continue;
       self.marketCapTables()[0]['data'].push({
@@ -79,7 +79,7 @@ var AssetLeaderboardViewModel = CClass.create(function() {
     for (i = 0; i < marketInfo.length; i++) {
       marketInfo[i]['position_btc'] = i + 1;
     }
-    assert(self.marketCapTables()[1]['base'] == 'BTC');
+    assert(self.marketCapTables()[1]['base'] == 'LTC');
     for (i = 0; i < marketInfo.length; i++) {
       if (!marketInfo[i]['price_in_btc']) continue;
       self.marketCapTables()[1]['data'].push({
@@ -130,16 +130,16 @@ var AssetLeaderboardViewModel = CClass.create(function() {
   }
 
   self.showPortfolioInXCP = function() {
-    self.showPortfolioIn("XCP");
+    self.showPortfolioIn("XLP");
   }
 
   self.showPortfolioInBTC = function() {
-    self.showPortfolioIn("BTC");
+    self.showPortfolioIn("LTC");
   }
 
   self.showPortfolioIn.subscribeChanged(function(newValue, prevValue) {
     if (!prevValue) return; //initial setting on initialization, ignore
-    assert(newValue == "XCP" || newValue == "BTC", "Invalid value");
+    assert(newValue == "XLP" || newValue == "LTC", "Invalid value");
     if (newValue == prevValue) return; //no change
     if (self.isLeaderboard) {
       self.generateMarketCapHistoryGraph(); //regenerate for switch to different data
@@ -217,9 +217,9 @@ var AssetLeaderboardViewModel = CClass.create(function() {
 AssetLeaderboardViewModel.formulateExtendedAssetInfo = function(asset, hasImage, website) {
   //determine asset image
   var dispAsset = asset;
-  if (asset == 'XCP' || asset == 'BTC') {
+  if (asset == 'XLP' || asset == 'LTC') {
     dispAsset = '<img src="assets/' + asset + '.png" />&nbsp;';
-    var website = asset == 'XCP' ? "http://www.counterparty.co" : "http://www.bitcoin.org";
+    var website = asset == 'XLP' ? "http://www.counterparty.co" : "http://www.bitcoin.org";
     dispAsset += '<a href="' + website + '" target="_blank">' + asset + '</a>';
   } else if (hasImage) {
     dispAsset = '<img src="' + (USE_TESTNET ? '/_t_asset_img/' : '/_asset_img/') + asset + '.png" />&nbsp;';
